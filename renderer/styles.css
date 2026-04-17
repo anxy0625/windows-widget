@@ -1,0 +1,641 @@
+/* ================================================
+   全局 & 基础
+================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-width: 200px;
+  background: transparent;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  /* 或者 auto */
+  user-select: none;
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  -webkit-app-region: drag;
+}
+
+/* 全局隐藏类 */
+.hidden {
+  display: none !important;
+}
+
+/* 优雅的细体滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.widget {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  padding-bottom: 14px;
+  transition: opacity 0.3s;
+}
+
+/* ================================================
+   拖动栏
+================================================ */
+.drag-bar {
+  -webkit-app-region: drag;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px 6px;
+  cursor: move;
+}
+
+.drag-bar .btn-icon {
+  -webkit-app-region: no-drag;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.drag-bar .btn-icon:hover {
+  opacity: 1;
+}
+
+/* 置顶按钮 */
+.btn-pin {
+  font-size: 12px !important;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-pin.active {
+  opacity: 1 !important;
+}
+
+.btn-pin:not(.active) {
+  opacity: 0.35 !important;
+  filter: grayscale(1);
+  transform: rotate(45deg);
+}
+
+
+/* ================================================
+   模块通用样式
+================================================ */
+.module {
+  margin: 0 8px 6px;
+  padding: 7px 10px;
+  border-radius: 8px;
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.module-icon {
+  font-size: 13px;
+}
+
+.module-label {
+  flex: none;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.module-value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.module-unit {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.module-sub {
+  font-size: 10px;
+  opacity: 0.55;
+  margin-top: 3px;
+  padding-left: 2px;
+}
+
+/* 进度条 */
+.progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* 网络行 */
+.net-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.net-up-label {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.net-down-label {
+  color: #22d3ee;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.net-speed {
+  font-size: 12px;
+}
+
+/* 日期时间 */
+.module-datetime {
+  text-align: center;
+  padding: 10px 10px 8px;
+}
+
+.datetime-time {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.datetime-date {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* 可点击的行 */
+.clickable-row {
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background 0.15s, padding 0.15s;
+  border-radius: 6px;
+  margin: -4px;
+  padding: 4px;
+}
+
+.clickable-row:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 进程排行面板 */
+.proc-panel {
+  margin-top: 6px;
+  /* 移除固定 max-height 和 transition 以免干扰高度同步 */
+  overflow-y: hidden;
+  overflow-x: hidden;
+  -webkit-app-region: no-drag;
+}
+
+.proc-panel.hidden {
+  display: none !important;
+}
+
+.proc-panel::-webkit-scrollbar {
+  width: 3px;
+}
+
+.proc-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.proc-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.proc-item {
+  display: flex;
+  align-items: center;
+  padding: 3px 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  gap: 4px;
+  transition: background 0.15s;
+  cursor: default;
+}
+
+.proc-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.group-header {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.group-header:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.proc-expander {
+  width: 14px;
+  text-align: center;
+  font-size: 8px;
+  opacity: 0.5;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.proc-expander.expanded {
+  transform: rotate(90deg);
+}
+
+.child-item {
+  padding-left: 20px;
+  opacity: 0.9;
+  border-left: 1px dashed rgba(255, 255, 255, 0.1);
+  margin-left: 6px;
+}
+
+.proc-rank {
+  width: 14px;
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.4;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.proc-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+}
+
+.proc-value {
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.proc-kill {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 10px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.proc-item:hover .proc-kill {
+  opacity: 0.6;
+}
+
+.proc-kill:hover {
+  opacity: 1 !important;
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.proc-loading {
+  text-align: center;
+  font-size: 10px;
+  opacity: 0.4;
+  padding: 8px 0;
+}
+
+/* 隐藏模块 */
+.module.hidden {
+  display: none;
+}
+
+/* ================================================
+   主题：暗色（dark）
+================================================ */
+.theme-dark {
+  background: rgba(15, 15, 25, 0.88);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.theme-dark .widget-title {
+  color: #94a3b8;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.theme-dark .btn-icon {
+  color: #94a3b8;
+}
+
+.theme-dark .btn-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.theme-dark .module {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark .progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-dark .cpu-fill {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.theme-dark .mem-fill {
+  background: linear-gradient(90deg, #22c55e, #10b981);
+}
+
+/* ================================================
+   主题：霓虹（neon）
+================================================ */
+.theme-neon {
+  background: rgba(5, 5, 20, 0.92);
+  color: #e0f7ff;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.08);
+}
+
+.theme-neon .widget-title {
+  color: #00ffff;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px #00ffff88;
+}
+
+.theme-neon .btn-icon {
+  color: #00ffff;
+}
+
+.theme-neon .btn-icon:hover {
+  background: rgba(0, 255, 255, 0.15);
+}
+
+.theme-neon .module {
+  background: rgba(0, 255, 255, 0.04);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.theme-neon .module-value {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffffaa;
+}
+
+.theme-neon .datetime-time {
+  color: #00ffff;
+  text-shadow: 0 0 15px #00ffffaa;
+}
+
+.theme-neon .progress-bar {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.theme-neon .cpu-fill {
+  background: linear-gradient(90deg, #00ffff, #0080ff);
+  box-shadow: 0 0 6px #00ffff88;
+}
+
+.theme-neon .mem-fill {
+  background: linear-gradient(90deg, #00ff88, #00ffcc);
+  box-shadow: 0 0 6px #00ff8888;
+}
+
+.theme-neon .net-up-label {
+  color: #ffaa00;
+  text-shadow: 0 0 6px #ffaa0088;
+}
+
+.theme-neon .net-down-label {
+  color: #00ffff;
+  text-shadow: 0 0 6px #00ffff88;
+}
+
+/* ================================================
+   主题：毛玻璃（glass）
+================================================ */
+.theme-glass {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.theme-glass .widget-title {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+}
+
+.theme-glass .btn-icon {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.theme-glass .btn-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.theme-glass .module {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.theme-glass .progress-bar {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.theme-glass .cpu-fill {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.9), rgba(99, 102, 241, 0.9));
+}
+
+.theme-glass .mem-fill {
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.9), rgba(16, 185, 129, 0.9));
+}
+
+/* ================================================
+   主题：极简白（minimal）
+================================================ */
+.theme-minimal {
+  background: rgba(248, 250, 252, 0.95);
+  color: #1e293b;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.theme-minimal .widget-title {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.theme-minimal .btn-icon {
+  color: #64748b;
+}
+
+.theme-minimal .btn-icon:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1e293b;
+}
+
+.theme-minimal .module {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.theme-minimal .module-value {
+  color: lch(7.96% 14.45 283.28);
+}
+
+.theme-minimal .datetime-time {
+  color: #0f172a;
+}
+
+.theme-minimal .progress-bar {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.theme-minimal .cpu-fill {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+}
+
+.theme-minimal .mem-fill {
+  background: linear-gradient(90deg, #22c55e, #10b981);
+}
+
+.theme-minimal .net-up-label {
+  color: #d97706;
+}
+
+.theme-minimal .net-down-label {
+  color: #0891b2;
+}
+
+/* ================================================
+   收缩折叠面板（靠边隐藏）
+================================================ */
+.widget.collapsed {
+  height: 6px !important;
+  min-height: 6px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 0 10px 10px !important;
+  cursor: pointer !important;
+  transition: background 0.3s ease !important;
+  background: var(--collapsed-bg, rgba(128, 128, 128, 0.4)) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+  -webkit-app-region: no-drag !important;
+}
+
+.widget.collapsed>* {
+  display: none !important;
+}
+
+.widget.collapsed:hover {
+  background: var(--collapsed-hover-bg, rgba(128, 128, 128, 0.6)) !important;
+}
+
+/* 定义对应主题的收缩后色块 */
+.theme-dark {
+  --collapsed-bg: rgba(255, 255, 255, 0.15);
+  --collapsed-hover-bg: rgba(255, 255, 255, 0.3);
+}
+
+.theme-neon {
+  --collapsed-bg: rgba(0, 255, 255, 0.3);
+  --collapsed-hover-bg: rgba(0, 255, 255, 0.6);
+}
+
+.theme-glass {
+  --collapsed-bg: rgba(255, 255, 255, 0.25);
+  --collapsed-hover-bg: rgba(255, 255, 255, 0.45);
+}
+
+.theme-minimal {
+  --collapsed-bg: rgba(0, 0, 0, 0.15);
+  --collapsed-hover-bg: rgba(0, 0, 0, 0.25);
+}
+
+/* 天气手动刷新按钮样式 */
+.btn-refresh-weather {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 4px;
+  opacity: 0.55;
+  transition: opacity 0.2s, transform 0.2s;
+  -webkit-app-region: no-drag;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.btn-refresh-weather:hover {
+  opacity: 1;
+}
+
+.btn-refresh-weather.spinning {
+  animation: rotate-once 0.8s ease-in-out;
+}
+
+@keyframes rotate-once {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.weather-last-update {
+  font-size: 12px;
+  opacity: 0.55;
+  margin-left: 2px;
+  margin-right: auto;
+  white-space: nowrap;
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桌面监控</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="widget" class="widget theme-dark">
+  <!-- 拖动区域（顶部标题栏） -->
+  <div class="drag-bar" id="dragBar">
+    <span class="widget-title">系统监控</span>
+    <div class="drag-actions">
+      <button class="btn-icon btn-pin active" id="btnPin" title="取消置顶">📌</button>
+      <button class="btn-icon" id="btnSettings" title="设置">⚙</button>
+    </div>
+  </div>
+
+  <!-- 日期时间模块 -->
+  <div class="module module-datetime" id="modDatetime">
+    <div class="datetime-time" id="timeDisplay">--:--:--</div>
+    <div class="datetime-date" id="dateDisplay">----</div>
+  </div>
+
+  <!-- CPU 模块 -->
+  <div class="module module-cpu" id="modCpu">
+    <div class="module-header clickable-row" id="btnCpuTop" title="点击查看/隐藏 CPU 排行榜">
+      <span class="module-icon">🖥</span>
+      <span class="module-label">CPU</span>
+      <span class="module-value" id="cpuUsage">--</span>
+      <span class="module-unit">%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill cpu-fill" id="cpuBar" style="width:0%"></div>
+    </div>
+    <div class="module-sub" id="cpuTemp"></div>
+    <!-- CPU 进程排行榜 -->
+    <div class="proc-panel hidden" id="cpuProcPanel">
+      <div class="proc-list" id="cpuProcList"></div>
+    </div>
+  </div>
+
+  <!-- 内存模块 -->
+  <div class="module module-mem" id="modMemory">
+    <div class="module-header clickable-row" id="btnMemTop" title="点击查看/隐藏内存排行榜">
+      <span class="module-icon">💾</span>
+      <span class="module-label">内存</span>
+      <span class="module-value" id="memPercent">--</span>
+      <span class="module-unit">%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill mem-fill" id="memBar" style="width:0%"></div>
+    </div>
+    <div class="module-sub" id="memDetail">-- / --</div>
+    <!-- 内存进程排行榜 -->
+    <div class="proc-panel hidden" id="memProcPanel">
+      <div class="proc-list" id="memProcList"></div>
+    </div>
+  </div>
+
+  <!-- 网络模块 -->
+  <div class="module module-net" id="modNetwork">
+    <div class="module-header">
+      <span class="module-icon">🌐</span>
+      <span class="module-label">网络</span>
+    </div>
+    <div class="net-row">
+      <span class="net-up-label">↑</span>
+      <span class="net-speed" id="netUp">-- KB/s</span>
+    </div>
+    <div class="net-row">
+      <span class="net-down-label">↓</span>
+      <span class="net-speed" id="netDown">-- KB/s</span>
+    </div>
+  </div>
+
+  <!-- 天气模块 -->
+  <div class="module module-weather" id="modWeather">
+    <div class="module-header">
+      <span class="module-icon">🌤</span>
+      <span class="module-label" id="weatherCity">--</span>
+      <button class="btn-refresh-weather" id="btnRefreshWeather" title="手动刷新天气">↻</button>
+      <span class="weather-last-update" id="weatherLastUpdate"></span>
+      <span class="module-value" id="weatherTemp">--</span>
+    </div>
+    <div class="module-sub" id="weatherDesc">--</div>
+    <div class="module-sub" id="weatherHumidity"></div>
+  </div>
+</div>
+
+<script src="widget.js"></script>
+</body>
+</html>

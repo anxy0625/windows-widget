@@ -1,0 +1,16 @@
+{
+  "name": "windows-widget",
+  "version": "1.0.0",
+  "description": "Windows 桌面性能监控小插件",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "dependencies": {
+    "systeminformation": "^5.22.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0"
+  }
+}

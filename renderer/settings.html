@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>插件设置</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: #0f1117;
+  color: #e2e8f0;
+  padding: 20px;
+  font-size: 14px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section {
+  margin-bottom: 20px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* 主题选择 */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.theme-card {
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.1s;
+  font-size: 11px;
+  font-weight: 500;
+}
+.theme-card:hover { transform: translateY(-1px); }
+.theme-card.active { border-color: #6366f1; }
+
+.theme-card.t-dark {
+  background: rgba(15,15,25,0.9);
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.1);
+}
+.theme-card.t-neon {
+  background: rgba(5,5,20,0.95);
+  color: #00ffff;
+  border-color: rgba(0,255,255,0.2);
+  text-shadow: 0 0 6px #00ffff;
+}
+.theme-card.t-glass {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-color: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+.theme-card.t-minimal {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: rgba(0,0,0,0.1);
+}
+.theme-card.t-dark.active { border-color: #6366f1; }
+.theme-card.t-neon.active { border-color: #00ffff; }
+.theme-card.t-glass.active { border-color: #7c3aed; }
+.theme-card.t-minimal.active { border-color: #6366f1; }
+
+.theme-preview {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+/* 模块开关 */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.switch-row:last-child { border-bottom: none; }
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.switch-label .icon { font-size: 15px; }
+
+/* Toggle 开关 */
+.toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+}
+.toggle input { display: none; }
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.toggle input:checked + .toggle-slider { background: #6366f1; }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+/* 天气设置 */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.form-label { font-size: 12px; color: #94a3b8; min-width: 70px; }
+.form-input {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #e2e8f0;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: #6366f1; }
+.form-hint { font-size: 10px; color: #64748b; margin-top: 4px; }
+
+/* 透明度 */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.slider-row input[type=range] {
+  flex: 1;
+  accent-color: #6366f1;
+  height: 4px;
+}
+.slider-val { font-size: 12px; color: #94a3b8; min-width: 30px; text-align: right; }
+
+/* 底部按钮 */
+.footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: #6366f1; color: #fff; }
+.btn-secondary { background: rgba(255,255,255,0.1); color: #e2e8f0; }
+
+/* 刷新间隔按钮组 */
+.interval-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.interval-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #cbd5e1;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.interval-btn:hover { background: rgba(255,255,255,0.12); }
+.interval-btn.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+  font-weight: 600;
+}
+.interval-hint {
+  font-size: 10px;
+  color: #475569;
+  margin-top: 6px;
+}
+
+/* 天气测试状态 */
+.weather-test-result {
+  font-size: 11px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: none;
+}
+.weather-test-result.success { background: rgba(34,197,94,0.15); color: #4ade80; }
+.weather-test-result.error { background: rgba(239,68,68,0.15); color: #f87171; }
+</style>
+</head>
+<body>
+<h2>⚙️ 插件设置</h2>
+
+<!-- 主题选择 -->
+<div class="section">
+  <div class="section-title">界面主题</div>
+  <div class="theme-grid">
+    <div class="theme-card t-dark" data-theme="dark">
+      <div class="theme-preview">🌑</div>
+      暗色
+    </div>
+    <div class="theme-card t-neon" data-theme="neon">
+      <div class="theme-preview">⚡</div>
+      霓虹
+    </div>
+    <div class="theme-card t-glass" data-theme="glass">
+      <div class="theme-preview">💎</div>
+      毛玻璃
+    </div>
+    <div class="theme-card t-minimal" data-theme="minimal">
+      <div class="theme-preview">☁️</div>
+      极简
+    </div>
+  </div>
+</div>
+
+<!-- 显示模块 -->
+<div class="section">
+  <div class="section-title">显示模块</div>
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">🕐</span> 日期时间</span>
+    <label class="toggle"><input type="checkbox" id="modDatetime"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">🖥</span> CPU 使用率</span>
+    <label class="toggle"><input type="checkbox" id="modCpu"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">💾</span> 内存使用率</span>
+    <label class="toggle"><input type="checkbox" id="modMemory"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">🌐</span> 网络速率</span>
+    <label class="toggle"><input type="checkbox" id="modNetwork"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">🌤</span> 天气</span>
+    <label class="toggle"><input type="checkbox" id="modWeather"><span class="toggle-slider"></span></label>
+  </div>
+</div>
+
+<!-- 天气设置 -->
+<div class="section" id="weatherSection">
+  <div class="section-title">天气设置</div>
+  <div class="form-row">
+    <span class="form-label">城市名称</span>
+    <input type="text" class="form-input" id="weatherCity" placeholder="例：Beijing 或 上海">
+  </div>
+  <div class="form-hint" style="margin-left:80px;">使用 wttr.in 免费接口，无需 API Key</div>
+  <div class="form-row">
+    <span class="form-label">API Key</span>
+    <input type="text" class="form-input" id="weatherApiKey" placeholder="可选：OpenWeatherMap API Key">
+  </div>
+  <div class="form-hint" style="margin-left:80px;">留空则使用 wttr.in 免费接口</div>
+  <div style="margin-top:10px;">
+    <button class="btn btn-secondary" id="btnTestWeather" style="width:auto;padding:6px 16px;font-size:12px;">测试天气接口</button>
+    <div class="weather-test-result" id="weatherTestResult"></div>
+  </div>
+</div>
+
+<!-- 透明度 -->
+<div class="section">
+  <div class="section-title">透明度</div>
+  <div class="slider-row">
+    <span style="font-size:12px;color:#94a3b8;">不透明</span>
+    <input type="range" id="opacitySlider" min="30" max="100" value="90">
+    <span style="font-size:12px;color:#94a3b8;">全透明</span>
+    <span class="slider-val" id="opacityVal">90%</span>
+  </div>
+</div>
+
+<!-- 刷新间隔 -->
+<div class="section">
+  <div class="section-title">数据刷新间隔</div>
+  <div class="interval-group" id="intervalGroup">
+    <button class="interval-btn" data-val="1">1 秒</button>
+    <button class="interval-btn" data-val="2">2 秒</button>
+    <button class="interval-btn" data-val="3">3 秒</button>
+    <button class="interval-btn" data-val="5">5 秒</button>
+    <button class="interval-btn" data-val="10">10 秒</button>
+  </div>
+  <div class="interval-hint">💡 间隔越长，CPU 占用越低。推荐 2~3 秒</div>
+</div>
+
+<!-- 进程排行榜数量 -->
+<div class="section">
+  <div class="section-title">进程排行榜</div>
+  <div class="form-row">
+    <span class="form-label">Top N</span>
+    <input type="number" class="form-input" id="topN" min="3" max="30" value="10" style="width:60px;flex:none;">
+    <span style="font-size:11px;color:#64748b;">条进程</span>
+  </div>
+  <div class="form-hint" style="margin-left:80px;">点击小插件的 CPU / 内存图标可查看占用排行榜</div>
+</div>
+
+<!-- 系统设置 -->
+<div class="section">
+  <div class="section-title">系统设置</div>
+  
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">🚀</span> 开机自动启动</span>
+    <label class="toggle"><input type="checkbox" id="autoLaunch"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="form-hint" style="margin-top:6px; margin-bottom: 12px;">启用后插件将随 Windows 开机自动运行</div>
+
+  <div class="switch-row">
+    <span class="switch-label"><span class="icon">📍</span> 每次启动重置位置</span>
+    <label class="toggle"><input type="checkbox" id="resetPositionOnStart"><span class="toggle-slider"></span></label>
+  </div>
+  <div class="form-hint" style="margin-top:6px;">启用后每次启动都固定在屏幕右侧，关闭则记住上次拖动的位置</div>
+</div>
+
+<!-- 底部按钮 -->
+
+<div class="footer">
+  <button class="btn btn-secondary" id="btnCancel">取消</button>
+  <button class="btn btn-primary" id="btnSave">保存并应用</button>
+</div>
+
+<script>
+let config = null;
+
+async function init() {
+  config = await window.electronAPI.getConfig();
+  applyToUI(config);
+}
+
+function applyToUI(cfg) {
+  // 主题
+  document.querySelectorAll('.theme-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.theme === cfg.theme);
+  });
+
+  // 模块
+  document.getElementById('modDatetime').checked = cfg.modules.datetime;
+  document.getElementById('modCpu').checked = cfg.modules.cpu;
+  document.getElementById('modMemory').checked = cfg.modules.memory;
+  document.getElementById('modNetwork').checked = cfg.modules.network;
+  document.getElementById('modWeather').checked = cfg.modules.weather;
+
+  // 天气
+  document.getElementById('weatherCity').value = cfg.weatherCity || '';
+  document.getElementById('weatherApiKey').value = cfg.weatherApiKey || '';
+
+  // 透明度
+  const opacityPct = Math.round((cfg.opacity || 0.9) * 100);
+  document.getElementById('opacitySlider').value = opacityPct;
+  document.getElementById('opacityVal').textContent = opacityPct + '%';
+
+  // 刷新间隔
+  const interval = cfg.refreshInterval || 2;
+  document.querySelectorAll('.interval-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.val) === interval);
+  });
+
+  // 开机自启（直接读取配置文件中的选项）
+  document.getElementById('autoLaunch').checked = cfg.autoLaunch || false;
+
+  // Top N 与重置位置
+  document.getElementById('topN').value = cfg.topN || 10;
+  document.getElementById('resetPositionOnStart').checked = cfg.resetPositionOnStart || false;
+}
+
+// 主题点击
+document.querySelectorAll('.theme-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+
+// 刷新间隔按钮点击
+document.querySelectorAll('.interval-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.interval-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// 透明度滑块
+document.getElementById('opacitySlider').addEventListener('input', function() {
+  document.getElementById('opacityVal').textContent = this.value + '%';
+});
+
+// 测试天气
+document.getElementById('btnTestWeather').addEventListener('click', async () => {
+  const city = document.getElementById('weatherCity').value.trim() || '北京';
+  const apiKey = document.getElementById('weatherApiKey').value.trim();
+  const resultEl = document.getElementById('weatherTestResult');
+  resultEl.style.display = 'none';
+
+  try {
+    const data = await window.electronAPI.getWeather({ city, apiKey });
+    if (data) {
+      resultEl.className = 'weather-test-result success';
+      resultEl.textContent = `✅ 成功！${data.city} ${data.temp} ${data.desc}`;
+    } else {
+      resultEl.className = 'weather-test-result error';
+      resultEl.textContent = '❌ 获取失败，请检查城市名称或网络连接';
+    }
+  } catch (e) {
+    resultEl.className = 'weather-test-result error';
+    resultEl.textContent = '❌ 请求出错：' + e.message;
+  }
+  resultEl.style.display = 'block';
+});
+
+// 保存
+document.getElementById('btnSave').addEventListener('click', async () => {
+  const activeTheme = document.querySelector('.theme-card.active');
+  const activeInterval = document.querySelector('.interval-btn.active');
+  const newConfig = {
+    theme: activeTheme ? activeTheme.dataset.theme : 'dark',
+    modules: {
+      datetime: document.getElementById('modDatetime').checked,
+      cpu: document.getElementById('modCpu').checked,
+      memory: document.getElementById('modMemory').checked,
+      network: document.getElementById('modNetwork').checked,
+      weather: document.getElementById('modWeather').checked
+    },
+    weatherCity: document.getElementById('weatherCity').value.trim() || '北京',
+    weatherApiKey: document.getElementById('weatherApiKey').value.trim(),
+    opacity: parseInt(document.getElementById('opacitySlider').value) / 100,
+    refreshInterval: activeInterval ? parseInt(activeInterval.dataset.val) : 2,
+    autoLaunch: document.getElementById('autoLaunch').checked,
+    topN: parseInt(document.getElementById('topN').value) || 10,
+    resetPositionOnStart: document.getElementById('resetPositionOnStart').checked
+  };
+
+  await window.electronAPI.saveConfig(newConfig);
+  window.electronAPI.closeSettings();
+});
+
+// 取消
+document.getElementById('btnCancel').addEventListener('click', () => {
+  window.electronAPI.closeSettings();
+});
+
+init();
+</script>
+</body>
+</html>
